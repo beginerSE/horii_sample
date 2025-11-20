@@ -187,7 +187,7 @@ def objective(trial, param1, param2, param3, param4):
     #print(X_val.shape)
     #print(Y_val.shape)
     
-    input_tensor = Input(shape=(common.IMG_WIDTH, common.IMG_HEIGHT, 3))
+    input_tensor = Input(shape=(common.IMG_HEIGHT, common.IMG_WIDTH, 3))
     model = create_model(input_tensor, model_params)
 
     # コールバック設定

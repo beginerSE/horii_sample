@@ -29,15 +29,44 @@ from transformers import ViTImageProcessor
 vit_model_name = common.VIT_MODEL_NAME
 vit_processor = ViTImageProcessor.from_pretrained(vit_model_name)
 
+
+def ensure_channels_last(x: np.ndarray) -> np.ndarray:
+    """Move the channel dimension to the last axis if it is not already there.
+
+    ViT では (H, W, C) の channels-last を前提にするため、
+    データセット内でチャネル軸が誤って配置された場合に備えて補正する。
+    """
+
+    if x.ndim != 4:
+        return x
+
+    # 現在の軸のうち、チャネル数 3 を持つ軸を特定する
+    channel_axis = None
+    for idx in range(1, 4):
+        if x.shape[idx] == 3:
+            channel_axis = idx
+            break
+
+    # すでに channels-last ならそのまま返す
+    if channel_axis is None or channel_axis == 3:
+        return x
+
+    # バッチ軸以外のうちチャネル軸を最後に移動する
+    perm = [0] + [ax for ax in (1, 2, 3) if ax != channel_axis] + [channel_axis]
+    return np.transpose(x, perm)
+
 def vit_preprocess(img_np):
     """
     ViT用の前処理関数。img_np は NumPy 形式 (H, W, 3)、0〜255 範囲想定。
-    戻り値は Tensor (3, 224, 224)
+    戻り値は NumPy 形式 (224, 224, 3) の channels-last。
     """
     if img_np.dtype != np.uint8:
         img_np = (img_np * 255).astype(np.uint8)
     processed = vit_processor(images=img_np, return_tensors="tf")
-    return processed["pixel_values"][0]  # shape: (3, 224, 224)
+    # HF Processor は (3, 224, 224) の channels-first で返すため、ViT(TensorFlow)
+    # が期待する channels-last へ転置する。
+    pixel_values = processed["pixel_values"][0].numpy()  # (3, 224, 224)
+    return np.transpose(pixel_values, (1, 2, 0))  # (224, 224, 3)
 
 
 
@@ -463,11 +492,11 @@ def data_set(
     # X: np.array
     # Y: one-hot
     #
-    X_train = np.array(data_train)
+    X_train = ensure_channels_last(np.array(data_train))
     Y_train = to_categorical(label_train)
-    X_val   = np.array(data_val)
+    X_val   = ensure_channels_last(np.array(data_val))
     Y_val   = to_categorical(label_val)
-    X_test  = np.array(data_test)
+    X_test  = ensure_channels_last(np.array(data_test))
     Y_test  = to_categorical(label_test)
 
     #print("X_train.shape:" + str(X_train.shape))
