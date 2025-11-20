@@ -76,14 +76,15 @@ def create_model(input_tensor, model_params):
 
         # Optuna 実行時に形状が乱れていても channels-last に揃える (バッチ次元を含む想定)
         def _enforce_channels_last(x):
-            if tf.rank(x) != 4:
-                return x
-            channel_dim = tf.shape(x)[-1]
-            needs_transpose = tf.not_equal(channel_dim, 3)
+            rank = tf.rank(x)
             return tf.cond(
-                needs_transpose,
-                lambda: tf.transpose(x, (0, 2, 3, 1)),
+                tf.not_equal(rank, 4),
                 lambda: x,
+                lambda: tf.cond(
+                    tf.not_equal(tf.shape(x)[-1], 3),
+                    lambda: tf.transpose(x, (0, 2, 3, 1)),
+                    lambda: x,
+                ),
             )
 
         inputs_cl = tf.keras.layers.Lambda(_enforce_channels_last, name="ensure_channels_last_tensor")(inputs)
