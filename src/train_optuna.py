@@ -16,6 +16,9 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.callbacks import ModelCheckpoint
 
 from transformers import TFAutoModelForImageClassification
+from tensorflow.keras import backend as K
+
+from data_preprocessing import ensure_channels_last
 
 
 import torch
@@ -181,6 +184,11 @@ def objective(trial, param1, param2, param3, param4):
     Y_batch = param2
     X_val = param3
     Y_val = param4
+
+    # ViT では channels-last を前提とするため、念のためデータとグローバル設定を補正
+    K.set_image_data_format('channels_last')
+    X_batch = ensure_channels_last(np.array(X_batch)).astype('float32')
+    X_val = ensure_channels_last(np.array(X_val)).astype('float32')
     
     #print(X_batch.shape)
     #print(Y_batch.shape)
