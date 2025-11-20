@@ -1,0 +1,153 @@
+{
+  // 
+  // クラスのリスト（フォルダ名と連動）
+  // 
+  "CLASS_LIST": ["Normal", "COVID", "Lung_Opacity", "Viral Pneumonia"],
+  // 
+  // クラス数
+  // 
+  "NUM_CLASS": 4,
+  // 
+  // 画像サイズ
+  // 
+  "IMG_WIDTH": 224,
+  "IMG_HEIGHT": 224,
+  // 
+  // 入力画像のフォルダ構成
+  // 
+  // medical_image  （common.FOLDER_STRUCTURE = 1）
+  //   train,val,testフォルダに最初から分かれている
+  // medical_image_2（common.FOLDER_STRUCTURE = 2）
+  //   train,val,testフォルダに分かれていない
+  "FOLDER_STRUCTURE": 2,
+  // 
+  // 入力画像のあるフォルダパス
+  // 
+  // FOLDER_STRUCTURE: 2 のときは同じフォルダ指定
+  "TRAIN_PATH": "/app/medical_image_2/archive/COVID-19_Radiography_Dataset/",
+  "VAL_PATH": "/app/medical_image_2/archive/COVID-19_Radiography_Dataset/",
+  "TEST_PATH": "/app/medical_image_2/archive/COVID-19_Radiography_Dataset/",
+  // 
+  // データ数の指定かデータ比率の指定かを切り替えるスイッチ
+  // 
+  // 0    : 比率指定。ファイルリストから（ディレクトリにある画像の数）。訓練データ・検証データ・テストデータの比率（0.8, 0.1, 0.1）
+  // else : 各データ数を指定
+  "DATASET_MODE": 1,
+  "NUM_OF_TRAIN": 100, // 1クラスあたりのデータ数（読み込み時）、実際の訓練データ数は common.NUM_CLASS * num_of_train - (num_of_test + num_of_val)
+                        // Viral Pneumonia が 1345 なので "DATASET_MODE": 1 のとき 設定可能なmaxは 1345
+  "NUM_OF_VAL": 10,    // 全クラスでのデータ数
+  "NUM_OF_TEST": 10,   // 全クラスでのデータ数
+  // 
+  // prediction()で使用するデータ数(NUM_OF_TEST 以下に設定)
+  // FOLDER_STRUCTURE = 2 のときは
+  // train,val,testフォルダに分かれていないので
+  // 改めてprediction()向けに入力データを設定していることになる
+  "NUM_OF_TEST_FOR_PREDICTION": 100, // 1クラスあたりのテストするデータ数(1番最後に改めてテストしている)
+  // 
+  // 各処理のON/OFF
+  // 
+  "SW_LEARNING": true,
+  "SW_EVALUATION": true,
+  "SW_GRAPH_DISP": true,
+  "SW_PREDICTION": true,
+  "SW_CONFUSION_MATRIX": true,
+  "SW_GRAD_CAM": true, // ViT時は対応していない　※※※※※※※※※
+  "SW_DATA_EXTENSION": false,
+  // 
+  // OPUTUNA or GRIDSEARCH or 1回実行
+  // OPUTUNA -> GRIDSEARCH -> 1回実行 (判定優先優)
+  // 
+  // "SW_OPTUNA": false,"SW_GRIDSEARCH": false, の場合  ->  1回実行
+  // 
+  // 1回実行: モデル関係の記述をベタ書きしている(モデルの指定も)　※※※※※※※※※
+  // 
+  "SW_OPTUNA": true,
+  "SW_GRIDSEARCH": false,
+  // 
+  // モデル名
+  // 
+  // OPTUNA           ：コード参照（'model_name': trial.suggest_categorical('model_name', ['VGG16','Xception']),）
+  // GRIDSEARCH：コード参照（base_model = tf.keras.applications.VGG16(weights='imagenet',）
+  // 1回実行          ：コード参照（ViTの場合はBASE_MODELもViTに）（model_name = "ViT"）
+  "BASE_MODEL": "ViT", // (純粋なモデル切り替えはこのパラメータを参照せず、コード内で記述。)gradCAM他で参照している。ので変更する必要はある。"ViT", "VGG16"
+  "VIT_MODEL_NAME": "google/vit-base-patch16-224-in21k", // Hugging Face
+  "VIT_MODEL_NAME_TIMM": "vit_base_patch16_224_in21k", // timm
+  // 
+  // 主要諸元
+  // 
+  "BATCH_SIZE": 8, // 16:8のほうがいい, 32:メモリエラー
+  "EPOCHS": 3,
+  // 
+  // 学習する層の範囲指定
+  // 
+  // true: 学習する層の範囲を指定する（FIX_LAYER　を参照する）
+  // false: ベースモデル全固定
+  // 
+  // OPTUNA            ：コード参照（'fix_layer': trial.suggest_int('fix_layer', 2, 2) ）（common.ENABLE_FIX_LAYER　は参照している）
+  // GRIDSEARCH：コード参照（参照していない）
+  // 1回実行          ：コード参照（参照していない）（vit_model.trainable = True  # 学習させたい場合）
+  "ENABLE_FIX_LAYER": true,
+  "FIX_LAYER": 19, // VGG16の場合: 19: 全体モデルの最終段以外学習しない // 参照していない
+  // 
+  // callback on/of
+  // 
+  // GRIDSEARCH: callback実装されていない
+  // 
+  // 学習率制御とcallbac内の学習率制御がかぶっている
+  // 
+  "ENABLE_CALLBACKS": true,
+  // 
+  // 
+  //
+  "DROPOUT_RATE": 0.5, // 最終段
+  "NUM_OF_UNIT": 128, // 最終段
+  "LEARNING_RATE": 1e-4,
+  "ALPHA": 0.1, // CosineDecay
+  // 
+  // 入力画像の処理で
+  // cv2使うかkeras.preprocessing.image使うか
+  // True : CV2
+  // False: keras.preprocessing.image
+  // 
+  "SW_CV2": true,
+  // 
+  // マスク画像をもとにマージするかどうか
+  // 
+  "ENABLE_MERGE": true,
+  // 
+  // ジョブ実行時グラフを表示させるかどうか(ポップアップ表示。trueにすると、ジョブを進めるには手動で閉じないといけない)
+  // 
+  "SW_PLT_SHOW_graph_disp": false,
+  "SW_PLT_SHOW_prediction": false,
+  "SW_PLT_SHOW_confusion_matrix": false,
+  "SW_PLT_SHOW_grad_cam": false,
+  // 
+  // GRAD_CAM
+  // 
+  // 対象とする入力画像
+  "IMAGE_PATH_INPUT_OF_GRAD_CAM": "/medical_image_2/archive/COVID-19_Radiography_Dataset/Normal/images/Normal-60.png",
+  // 対象とするマスク画像
+  "IMAGE_PATH_INPUT_OF_GRAD_CAM_MASKS": "/medical_image_2/archive/COVID-19_Radiography_Dataset/Normal/masks/Normal-60.png",
+  // ヒートマップ合成時パラメータ
+  // img = heatmap * common.INTENSITY + img
+  "INTENSITY": 0.6,
+  //
+  // 出力データ・ファイルの保存先ディレクトリ
+  //
+  // 出力ファイル先のフォルダ
+  "OUTPUT_PATH": "./output/",
+  // モデルの保存先
+  "RESULT_PATH": "./results/",
+  //
+  // データ拡張
+  //
+  // 1parameterあたりの拡張画像枚数
+  "NUM_OF_EXTENSION_PER_PARAM": 10,
+  // データ拡張後の保存先フォルダ
+  "DATA_EXTENSION_PATH": "./ImageDataGenerator_dataset/",
+  //
+  // OPTUNA
+  //
+  // OPTUNAの試行回数
+  "OPTUNA_N_TRIALS": 3
+}
