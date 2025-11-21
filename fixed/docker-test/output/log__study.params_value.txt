@@ -1,0 +1,3 @@
+{'model_name': 'VGG16', 'num_dense_layers': 0, 'dense_units': 64, 'dropout_rate': 0.3, 'activation_func': 'relu', 'optimizer_func': 'Nadam', 'learning_rate': 0.001, 'fix_layer': 2}: 0.800000011920929
+{'model_name': 'VGG16', 'num_dense_layers': 0, 'dense_units': 64, 'dropout_rate': 0.3, 'activation_func': 'relu', 'optimizer_func': 'Nadam', 'learning_rate': 0.001, 'fix_layer': 2}: 0.800000011920929
+{'model_name': 'VGG16', 'num_dense_layers': 0, 'dense_units': 64, 'dropout_rate': 0.3, 'activation_func': 'relu', 'optimizer_func': 'Nadam', 'learning_rate': 0.001, 'fix_layer': 2}: 0.800000011920929

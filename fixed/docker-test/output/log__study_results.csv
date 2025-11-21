@@ -1,0 +1,4 @@
+trial_number,value,param_model_name,param_num_dense_layers,param_dense_units,param_dropout_rate,param_activation_func,param_optimizer_func,param_learning_rate,param_fix_layer
+0,0.800000011920929,VGG16,0,64,0.3,relu,Nadam,0.001,2
+1,0.800000011920929,VGG16,0,64,0.3,relu,Nadam,0.001,2
+2,0.800000011920929,VGG16,0,64,0.3,relu,Nadam,0.001,2
