@@ -1,0 +1,264 @@
+
+
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/dist-packages/optuna/study/_optimize.py", line 201, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/app/src/train_optuna.py", line 191, in objective
+    model = create_model(input_tensor, model_params)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/train_optuna.py", line 82, in create_model
+    outputs = base_model(inputs, training=False)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/tmp/__autograph_generated_filekddb9bzp.py", line 40, in tf__run_call_with_unpacked_inputs
+    raise
+  File "/tmp/__autograph_generated_filen62qklbt.py", line 17, in tf__call
+    outputs = ag__.converted_call(ag__.ld(self).vit, (), dict(pixel_values=ag__.ld(pixel_values), head_mask=ag__.ld(head_mask), output_attentions=ag__.ld(output_attentions), output_hidden_states=ag__.ld(output_hidden_states), interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), return_dict=ag__.ld(return_dict), training=ag__.ld(training)), fscope)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/__autograph_generated_filekddb9bzp.py", line 40, in tf__run_call_with_unpacked_inputs
+    raise
+  File "/tmp/__autograph_generated_file0xoh3x74.py", line 24, in tf__call
+    embedding_output = ag__.converted_call(ag__.ld(self).embeddings, (), dict(pixel_values=ag__.ld(pixel_values), interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/__autograph_generated_filemkiwr8y6.py", line 12, in tf__call
+    embeddings = ag__.converted_call(ag__.ld(self).patch_embeddings, (ag__.ld(pixel_values),), dict(interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/__autograph_generated_filemav1ed82.py", line 63, in tf__call
+    projection = ag__.converted_call(ag__.ld(self).projection, (ag__.ld(pixel_values),), None, fscope)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Exception encountered when calling layer "tf_vi_t_for_image_classification" (type TFViTForImageClassification).
+
+in user code:
+
+    File "/usr/local/lib/python3.11/dist-packages/transformers/modeling_tf_utils.py", line 861, in run_call_with_unpacked_inputs  *
+        return func(self, **unpacked_inputs)
+    File "/usr/local/lib/python3.11/dist-packages/transformers/models/vit/modeling_tf_vit.py", line 870, in call  *
+        outputs = self.vit(
+    File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler  **
+        raise e.with_traceback(filtered_tb) from None
+    File "/tmp/__autograph_generated_filekddb9bzp.py", line 40, in tf__run_call_with_unpacked_inputs
+        raise
+    File "/tmp/__autograph_generated_file0xoh3x74.py", line 24, in tf__call
+        embedding_output = ag__.converted_call(ag__.ld(self).embeddings, (), dict(pixel_values=ag__.ld(pixel_values), interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+    File "/tmp/__autograph_generated_filemkiwr8y6.py", line 12, in tf__call
+        embeddings = ag__.converted_call(ag__.ld(self).patch_embeddings, (ag__.ld(pixel_values),), dict(interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+    File "/tmp/__autograph_generated_filemav1ed82.py", line 63, in tf__call
+        projection = ag__.converted_call(ag__.ld(self).projection, (ag__.ld(pixel_values),), None, fscope)
+
+    ValueError: Exception encountered when calling layer 'vit' (type TFViTMainLayer).
+    
+    in user code:
+    
+        File "/usr/local/lib/python3.11/dist-packages/transformers/modeling_tf_utils.py", line 861, in run_call_with_unpacked_inputs  *
+            return func(self, **unpacked_inputs)
+        File "/usr/local/lib/python3.11/dist-packages/transformers/models/vit/modeling_tf_vit.py", line 594, in call  *
+            embedding_output = self.embeddings(
+        File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler  **
+            raise e.with_traceback(filtered_tb) from None
+        File "/tmp/__autograph_generated_filemkiwr8y6.py", line 12, in tf__call
+            embeddings = ag__.converted_call(ag__.ld(self).patch_embeddings, (ag__.ld(pixel_values),), dict(interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+        File "/tmp/__autograph_generated_filemav1ed82.py", line 63, in tf__call
+            projection = ag__.converted_call(ag__.ld(self).projection, (ag__.ld(pixel_values),), None, fscope)
+    
+        ValueError: Exception encountered when calling layer 'embeddings' (type TFViTEmbeddings).
+        
+        in user code:
+        
+            File "/usr/local/lib/python3.11/dist-packages/transformers/models/vit/modeling_tf_vit.py", line 128, in call  *
+                embeddings = self.patch_embeddings(
+            File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler  **
+                raise e.with_traceback(filtered_tb) from None
+            File "/tmp/__autograph_generated_filemav1ed82.py", line 63, in tf__call
+                projection = ag__.converted_call(ag__.ld(self).projection, (ag__.ld(pixel_values),), None, fscope)
+        
+            ValueError: Exception encountered when calling layer 'patch_embeddings' (type TFViTPatchEmbeddings).
+            
+            in user code:
+            
+                File "/usr/local/lib/python3.11/dist-packages/transformers/models/vit/modeling_tf_vit.py", line 203, in call  *
+                    projection = self.projection(pixel_values)
+                File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler  **
+                    raise e.with_traceback(filtered_tb) from None
+                File "/usr/local/lib/python3.11/dist-packages/keras/src/engine/input_spec.py", line 280, in assert_input_compatibility
+                    raise ValueError(
+            
+                ValueError: Input 0 of layer "projection" is incompatible with the layer: expected axis -1 of input shape to have value 3, but received input with shape (None, 224, 3, 224)
+            
+            
+            Call arguments received by layer 'patch_embeddings' (type TFViTPatchEmbeddings):
+              • pixel_values=tf.Tensor(shape=(None, 224, 224, 3), dtype=float32)
+              • interpolate_pos_encoding=None
+              • training=False
+        
+        
+        Call arguments received by layer 'embeddings' (type TFViTEmbeddings):
+          • pixel_values=tf.Tensor(shape=(None, 224, 224, 3), dtype=float32)
+          • interpolate_pos_encoding=None
+          • training=False
+    
+    
+    Call arguments received by layer 'vit' (type TFViTMainLayer):
+      • pixel_values=tf.Tensor(shape=(None, 224, 224, 3), dtype=float32)
+      • head_mask=None
+      • output_attentions=False
+      • output_hidden_states=False
+      • interpolate_pos_encoding=None
+      • return_dict=True
+      • training=False
+
+
+Call arguments received by layer "tf_vi_t_for_image_classification" (type TFViTForImageClassification):
+  • pixel_values=tf.Tensor(shape=(None, 224, 224, 3), dtype=float32)
+  • head_mask=None
+  • output_attentions=None
+  • output_hidden_states=None
+  • interpolate_pos_encoding=None
+  • return_dict=None
+  • labels=None
+  • training=False
+[W 2025-11-10 06:31:45,320] Trial 0 failed with value None.
+Traceback (most recent call last):
+  File "/app/./src/main.py", line 435, in <module>
+    main()
+  File "/app/./src/main.py", line 176, in main
+    model, history = model_main(X_batch, Y_batch, X_val, Y_val)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/model_def_learning.py", line 80, in model_main
+    best_params, history, study = train_optuna(objective, X_batch, Y_batch, X_val, Y_val)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/train_optuna.py", line 328, in train_optuna
+    study.optimize(objective_with_param, n_trials=common.OPTUNA_N_TRIALS)
+  File "/usr/local/lib/python3.11/dist-packages/optuna/study/study.py", line 490, in optimize
+    _optimize(
+  File "/usr/local/lib/python3.11/dist-packages/optuna/study/_optimize.py", line 63, in _optimize
+    _optimize_sequential(
+  File "/usr/local/lib/python3.11/dist-packages/optuna/study/_optimize.py", line 160, in _optimize_sequential
+    frozen_trial_id = _run_trial(study, func, catch)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/optuna/study/_optimize.py", line 258, in _run_trial
+    raise func_err
+  File "/usr/local/lib/python3.11/dist-packages/optuna/study/_optimize.py", line 201, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/app/src/train_optuna.py", line 191, in objective
+    model = create_model(input_tensor, model_params)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/train_optuna.py", line 82, in create_model
+    outputs = base_model(inputs, training=False)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/tmp/__autograph_generated_filekddb9bzp.py", line 37, in tf__run_call_with_unpacked_inputs
+    retval_ = ag__.converted_call(ag__.ld(func), (ag__.ld(self),), dict(**ag__.ld(unpacked_inputs)), fscope)
+    ^^^^^
+  File "/tmp/__autograph_generated_filen62qklbt.py", line 17, in tf__call
+    outputs = ag__.converted_call(ag__.ld(self).vit, (), dict(pixel_values=ag__.ld(pixel_values), head_mask=ag__.ld(head_mask), output_attentions=ag__.ld(output_attentions), output_hidden_states=ag__.ld(output_hidden_states), interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), return_dict=ag__.ld(return_dict), training=ag__.ld(training)), fscope)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/__autograph_generated_filekddb9bzp.py", line 37, in tf__run_call_with_unpacked_inputs
+    retval_ = ag__.converted_call(ag__.ld(func), (ag__.ld(self),), dict(**ag__.ld(unpacked_inputs)), fscope)
+    ^^^^^
+  File "/tmp/__autograph_generated_file0xoh3x74.py", line 24, in tf__call
+    embedding_output = ag__.converted_call(ag__.ld(self).embeddings, (), dict(pixel_values=ag__.ld(pixel_values), interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/__autograph_generated_filemkiwr8y6.py", line 12, in tf__call
+    embeddings = ag__.converted_call(ag__.ld(self).patch_embeddings, (ag__.ld(pixel_values),), dict(interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/__autograph_generated_filemav1ed82.py", line 63, in tf__call
+    projection = ag__.converted_call(ag__.ld(self).projection, (ag__.ld(pixel_values),), None, fscope)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Exception encountered when calling layer "tf_vi_t_for_image_classification" (type TFViTForImageClassification).
+
+in user code:
+
+    File "/usr/local/lib/python3.11/dist-packages/transformers/modeling_tf_utils.py", line 861, in run_call_with_unpacked_inputs  *
+        return func(self, **unpacked_inputs)
+    File "/usr/local/lib/python3.11/dist-packages/transformers/models/vit/modeling_tf_vit.py", line 870, in call  *
+        outputs = self.vit(
+    File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler  **
+        raise e.with_traceback(filtered_tb) from None
+    File "/tmp/__autograph_generated_filekddb9bzp.py", line 40, in tf__run_call_with_unpacked_inputs
+        raise
+    File "/tmp/__autograph_generated_file0xoh3x74.py", line 24, in tf__call
+        embedding_output = ag__.converted_call(ag__.ld(self).embeddings, (), dict(pixel_values=ag__.ld(pixel_values), interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+    File "/tmp/__autograph_generated_filemkiwr8y6.py", line 12, in tf__call
+        embeddings = ag__.converted_call(ag__.ld(self).patch_embeddings, (ag__.ld(pixel_values),), dict(interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+    File "/tmp/__autograph_generated_filemav1ed82.py", line 63, in tf__call
+        projection = ag__.converted_call(ag__.ld(self).projection, (ag__.ld(pixel_values),), None, fscope)
+
+    ValueError: Exception encountered when calling layer 'vit' (type TFViTMainLayer).
+    
+    in user code:
+    
+        File "/usr/local/lib/python3.11/dist-packages/transformers/modeling_tf_utils.py", line 861, in run_call_with_unpacked_inputs  *
+            return func(self, **unpacked_inputs)
+        File "/usr/local/lib/python3.11/dist-packages/transformers/models/vit/modeling_tf_vit.py", line 594, in call  *
+            embedding_output = self.embeddings(
+        File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler  **
+            raise e.with_traceback(filtered_tb) from None
+        File "/tmp/__autograph_generated_filemkiwr8y6.py", line 12, in tf__call
+            embeddings = ag__.converted_call(ag__.ld(self).patch_embeddings, (ag__.ld(pixel_values),), dict(interpolate_pos_encoding=ag__.ld(interpolate_pos_encoding), training=ag__.ld(training)), fscope)
+        File "/tmp/__autograph_generated_filemav1ed82.py", line 63, in tf__call
+            projection = ag__.converted_call(ag__.ld(self).projection, (ag__.ld(pixel_values),), None, fscope)
+    
+        ValueError: Exception encountered when calling layer 'embeddings' (type TFViTEmbeddings).
+        
+        in user code:
+        
+            File "/usr/local/lib/python3.11/dist-packages/transformers/models/vit/modeling_tf_vit.py", line 128, in call  *
+                embeddings = self.patch_embeddings(
+            File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler  **
+                raise e.with_traceback(filtered_tb) from None
+            File "/tmp/__autograph_generated_filemav1ed82.py", line 63, in tf__call
+                projection = ag__.converted_call(ag__.ld(self).projection, (ag__.ld(pixel_values),), None, fscope)
+        
+            ValueError: Exception encountered when calling layer 'patch_embeddings' (type TFViTPatchEmbeddings).
+            
+            in user code:
+            
+                File "/usr/local/lib/python3.11/dist-packages/transformers/models/vit/modeling_tf_vit.py", line 203, in call  *
+                    projection = self.projection(pixel_values)
+                File "/usr/local/lib/python3.11/dist-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler  **
+                    raise e.with_traceback(filtered_tb) from None
+                File "/usr/local/lib/python3.11/dist-packages/keras/src/engine/input_spec.py", line 280, in assert_input_compatibility
+                    raise ValueError(
+            
+                ValueError: Input 0 of layer "projection" is incompatible with the layer: expected axis -1 of input shape to have value 3, but received input with shape (None, 224, 3, 224)
+            
+            
+            Call arguments received by layer 'patch_embeddings' (type TFViTPatchEmbeddings):
+              • pixel_values=tf.Tensor(shape=(None, 224, 224, 3), dtype=float32)
+              • interpolate_pos_encoding=None
+              • training=False
+        
+        
+        Call arguments received by layer 'embeddings' (type TFViTEmbeddings):
+          • pixel_values=tf.Tensor(shape=(None, 224, 224, 3), dtype=float32)
+          • interpolate_pos_encoding=None
+          • training=False
+    
+    
+    Call arguments received by layer 'vit' (type TFViTMainLayer):
+      • pixel_values=tf.Tensor(shape=(None, 224, 224, 3), dtype=float32)
+      • head_mask=None
+      • output_attentions=False
+      • output_hidden_states=False
+      • interpolate_pos_encoding=None
+      • return_dict=True
+      • training=False
+
+
+Call arguments received by layer "tf_vi_t_for_image_classification" (type TFViTForImageClassification):
+  • pixel_values=tf.Tensor(shape=(None, 224, 224, 3), dtype=float32)
+  • head_mask=None
+  • output_attentions=None
+  • output_hidden_states=None
+  • interpolate_pos_encoding=None
+  • return_dict=None
+  • labels=None
+  • training=False
+
+
+

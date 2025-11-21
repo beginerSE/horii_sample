@@ -1,0 +1,7 @@
+ conda activate horii
+cd C:\Users\pc\Desktop\menta_horii_sample
+
+docker run -it --rm ^
+  -v "C:\Users\pc\Desktop\menta_horii_sample\docker-test:/app" ^
+  ml-gpu-env
+python ./src/main.py ./config/config2.json5

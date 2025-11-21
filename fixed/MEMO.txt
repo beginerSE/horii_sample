@@ -1,0 +1,16 @@
+
+・実行コマンド
+python ./src/main.py ./config/config2.json5
+
+
+・今回の対象と思われるコード
+train_optuna.py
+内の
+create_model関数
+もしくは
+create_model
+がコールされる以前の箇所
+
+
+
+
