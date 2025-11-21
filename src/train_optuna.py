@@ -71,23 +71,8 @@ def create_model(input_tensor, model_params):
     fix_layer = model_params['fix_layer']
 
     if model_name == 'ViT':
-        # 入力テンソル
+        # 入力テンソル (Optunaでは事前に ensure_channels_last で整形済み)
         inputs = Input(shape=(common.IMG_HEIGHT, common.IMG_WIDTH, 3), name="input_image")
-
-        # Optuna 実行時に形状が乱れていても channels-last に揃える (バッチ次元を含む想定)
-        def _enforce_channels_last(x):
-            rank = tf.rank(x)
-            return tf.cond(
-                tf.not_equal(rank, 4),
-                lambda: x,
-                lambda: tf.cond(
-                    tf.not_equal(tf.shape(x)[-1], 3),
-                    lambda: tf.transpose(x, (0, 2, 3, 1)),
-                    lambda: x,
-                ),
-            )
-
-        inputs_cl = tf.keras.layers.Lambda(_enforce_channels_last, name="ensure_channels_last_tensor")(inputs)
 
         # Hugging Face ViTモデル（分類ヘッド付き）
         base_model = TFAutoModelForImageClassification.from_pretrained(
@@ -97,7 +82,7 @@ def create_model(input_tensor, model_params):
         base_model.trainable = True
 
         # 出力(logits)を取得
-        outputs = base_model(inputs_cl, training=False)
+        outputs = base_model(inputs, training=False)
         x = outputs.logits  # shape=(batch, hidden_size)
 
         # 必要に応じて Dense/Dropout を追加
